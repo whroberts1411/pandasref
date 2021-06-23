@@ -1,0 +1,57 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Login
+{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-5">
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissable text-dark text-center">
+            <button class="close" type="button" data-dismiss="alert">
+                <span><i class="far fa-times-circle"></i></span>
+            </button>
+            <h5>{{ message }}</h5>
+        </div>
+    {% endfor %}
+{% endif %}
+
+    <div class="card border-warning">
+        <div class="card-header text-center bg-secondary text-warning">
+            <h4>Login</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username"><b>Username</b></label>
+                    <input type="text" name="username" class="form-control text-info"
+                            id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password"><b>Password</b></label>
+                    <input type="password" name="password" class="form-control text-info"
+                            id="password" required>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="fas fa-user-check"></i>  Login</button>
+                <br>
+            </form>
+        </div>
+        <div class="card-footer text-center text-danger font-italic">
+            If you do not have an account, please Signup first.<br>
+            Or, sign in as a guest (username & password = guest)
+        </div>
+    </div>
+    <h2 class="text-danger text-center mt-4">{{ error }}</h2>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,123 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Command Details
+{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+<h1 class="text-info text-center mt-3">Pandas Command Details</h1>
+<h3 class="text-danger text-center mt-2">{{ message }}</h3>
+<div class="justify-content-center mb-4">
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+
+                <div class="form-group">
+                    <label for="command" class="font-weight-bold">Command :</label>
+                    <input class="form-control form-control-sm" type="text" id="command"
+                    name="command" value="{{ dets.command }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="example" class="font-weight-bold">Example :</label>
+                    <input class="form-control form-control-sm" type="text" id="example"
+                    name="example" value="{{ dets.example }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="font-weight-bold">Description :</label>
+                    <textarea class="form-control form-control-sm" type="text" id="description"
+                    name="description" rows="5"
+                    value="{{ dets.description }}">{{ dets.description }}</textarea>
+                </div>
+
+<!-----------------------------------------------------------------------------
+    Note that comparing database field values DOES NOT WORK if compared
+    directly. They must be converted to strings for the comparison to work.
+    In the following <select> tags, the "slugify" template filter is used to
+    do this - if the filter is omitted, the comparison fails.
+------------------------------------------------------------------------------>
+
+                <div class="form-group">
+                    <label for="appliesto" class="font-weight-bold">Type :</label>
+                    <select name="appliesto" class="form-control form-control-sm" id="appliesto">
+                        {% for item in app %}
+                        <option value="{{ item.appliesto }}"
+                        {% if dets.appliesto|slugify == item.appliesto|slugify %}
+                        selected {% endif %}>
+                        {{ item.appliesto }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="category" class="font-weight-bold">Category :</label>
+                    <select name="category" class="form-control form-control-sm" id="category">
+                        {% for item in cat %}
+                        <option value="{{ item.category }}"
+                        {% if dets.category|slugify == item.category|slugify %}
+                        selected {% endif %}>{{ item.category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {% if display %}
+                    <div class="form-check">
+                        <label class="form-check-label mr-2 font-weight-bold">
+                            <input class="form-check-input" type="checkbox" name="inplace"
+                            {% if dets.inplace %} checked {% endif %} > Series/Dataframe Updated Inplace?
+                        </label>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="row mt-3">
+
+            <div class="col-md-10 offset-md-1">
+                <a href="{% url 'fulldets' dets.id 'prev' 'none' %}"
+                class="btn btn-dark btn-sm mr-2">
+                    <i class="far fa-arrow-alt-circle-left fa-2x"></i>
+                </a>
+
+                {% if user.is_staff %}
+                    <button type="submit" class="btn btn-success btn-sm mr-2" id="filter">
+                        <i class="fas fa-pencil-alt"></i> Update
+                    </button>
+                    <a href="{% url 'delete' dets.id %}" class="btn btn-danger btn-sm mr-2">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </a>
+                    <a href="{% url 'fulldets' dets.id 'none' 'dup' %}" class="btn btn-secondary btn-sm mr-2">
+                        <i class="fas fa-copy"></i> Duplicate
+                    </a>
+                {% endif %}
+
+                <a href="{% url 'index' %}" class="btn btn-warning btn-sm mr-2">
+                    <i class="fas fa-level-up-alt"></i> Main Screen
+                </a>
+
+                <a href="{% url 'fulldets' dets.id 'next' 'none' %}"
+                class="btn btn-dark btn-sm">
+                    <i class="far fa-arrow-alt-circle-right fa-2x"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+{% endblock content %}
+
+<!-----------------------------------------------------------------------------
+------------------------------------------------------------------------------>
+{% block scripts %}
+
+{% endblock scripts %}

@@ -1,0 +1,150 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Statistics
+{% endblock title %}
+{% load static %}
+{% block content %}
+
+<h1 class="text-info text-center mb-4">Pandas Command Statistics</h1>
+<!-----------------------------------------------------------------------------
+    Totals for all records - just totals, no charts or breakdowns
+------------------------------------------------------------------------------>
+<div class="row d-flex mb-md-4">
+    <div class="col-md-4">
+        <div class="card border-warning text-center mb-2">
+            <div class="card-header font-weight-bold">
+                {{ tot.1 }} Categories
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Total number of categories.<br> Click for a table and chart of all <a href="#category">Categories</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-warning text-center mb-2">
+            <div class="card-header font-weight-bold">
+               {{ tot.2 }} Types
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Total number of object types.<br> Click for a table and chart of all
+                    <a href="#type">Types</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-warning text-center mb-2">
+            <div class="card-header font-weight-bold">
+                {{ tot.0 }} Commands
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Total number of Pandas Commands.<br> Click for a table and chart of 
+                    combined <a href="#combined">Category and Type</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<!-----------------------------------------------------------------------------
+    Category details - a table and a bar chart
+------------------------------------------------------------------------------>
+<section id="category">
+    <div class="row d-flex mb-md-4">
+        <div class="col-md-4">
+            <table id="table" class="table table-striped table-sm">
+                <thead class="bg-secondary text-warning">
+                    <tr>
+                        <th scope="col">Category</th>
+                        <th scope="col">Count</th>
+                    </tr>
+                </thead>
+                {% for rec in cat %}
+                    <tr>
+                        <td>{{ rec.category__category}}</td>
+                        <td>{{ rec.count }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-8">
+            <div class="mt-md-2">
+                {{ graph|safe }}
+            </div>
+        </div>
+    </div>
+    <hr>
+</section>
+<!-----------------------------------------------------------------------------
+    Pandas object type details - a table and a pie chart.
+------------------------------------------------------------------------------>
+<section id="type">
+    <div class="row d-flex">
+        <div class="col-md-4">
+            <table id="table" class="table table-striped table-sm mt-md-5">
+                <thead class="bg-secondary text-warning">
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Count</th>
+                    </tr>
+                </thead>
+                {% for rec in typ %}
+                    <tr>
+                        <td>{{ rec.appliesto__appliesto}}</td>
+                        <td>{{ rec.count }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-8">
+            <div class="mt-md-1">
+                {{ pie|safe }}
+            </div>
+        </div>
+    </div>
+    <hr>
+</section>
+<!-----------------------------------------------------------------------------
+    Combined table giving a breakdown by type within category, with counts.
+------------------------------------------------------------------------------>
+<section id="combined">
+    <div class="row d-flex">
+        <div class="col-md-4">
+            <table id="table" class="table table-striped table-sm">
+                <thead class="bg-secondary text-warning">
+                    <tr>
+                        <th scope="col">Category</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Count</th>
+                    </tr>
+                </thead>
+                {% for rec in comb %}
+                    <tr>
+                        <td>{{ rec.0 }}</td>
+                        <td>{{ rec.1 }}</td>
+                        <td>{{ rec.2 }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-8">
+            <div class="mt-md-5">
+                {{ bars|safe }}
+            </div>
+        </div>
+    </div>
+    <hr>
+</section>
+<!-----------------------------------------------------------------------------
+------------------------------------------------------------------------------>
+{% endblock content %}
+
+{% block scripts %}
+
+{% endblock scripts %}

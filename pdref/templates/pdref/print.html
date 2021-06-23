@@ -1,0 +1,71 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Print Commands
+{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+<h3 class="text-info text-center my-3">Print Pandas Commands</h3>
+
+<p>This option will create a pdf file of the <b>currently-selected command set</b>,
+    as displayed on the Home screen. To amend the selected set of commands,
+    return to the Home screen and adjust the filter options before printing.
+</p>
+<p>Enter a filename for the generated pdf file, and click the button to either
+    print a condensed list of commands (as per the Home screen), or an
+    expanded list with a full description of each command.
+    A footer can also be added to each page if required - this will have the
+    current date and time at the left-hand margin, and the page number at the
+    right-hand margin.
+</p>
+<p>The pdf file will be downloaded to the default download folder, and also
+    displayed on the screen for checking (this behaviour may be different,
+    as it is determined by the browser being used and the browser options
+    that have been set).
+</p>
+<br>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input class="form-control form-control-sm" type="text" id="filename"
+                name="filename" placeholder="Enter Filename..." required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <select name="option" class="form-control form-control-sm" id="option" required>
+                    <option value="" selected disabled>Select Print Option...</option>
+                    <option value="list">Print a summary command list</option>
+                    <option value="dets">Print a detailed command list</option>
+                </select>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <button type="submit" class="btn btn-success btn-sm mt-2">
+                <i class="fas fa-print"></i> Print Selected Commands
+            </button>
+        </div>
+        <div class="col-md-6 mt-3 text-center text-danger font-weight-bold">
+            (Number of Records Selected : {{ recs }})
+        </div>
+    </div>
+
+</form>
+
+{% endblock content %}
+
+{% block scripts %}
+
+{% endblock scripts %}

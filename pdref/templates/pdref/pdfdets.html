@@ -1,0 +1,40 @@
+
+{% extends 'base2.html' %}
+
+{% block title %}
+    List Commands
+{% endblock title %}
+{% load static %}
+{% block content %}
+
+<h5 class="text-info text-center">Pandas Command Details</h5>
+
+<table id="table" class="table table-striped table-sm">
+    <thead class="bg-secondary">
+        <tr>
+            <th scope="col">Command</th>
+            <th scope="col">Example</th>
+            <th scope="col">For</th>
+            <th scope="col">Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rec in pds %}
+            <tr>
+                <td>{{ rec.command }}</td>
+                <td>{{ rec.example }}</td>
+                <td>{{ rec.appliesto }}</td>
+                <td>{{ rec.category }}</td>
+            </tr>
+            <tr class="text-secondary">
+                <td colspan="4">{{ rec.description|safe }}<br><br></td>
+            </tr>
+        {% endfor %}
+    </tbody
+</table>
+
+{% endblock content %}
+
+{% block scripts %}
+
+{% endblock scripts %}

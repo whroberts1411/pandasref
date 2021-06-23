@@ -1,0 +1,167 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Pandas Reference
+{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+<h1 class="text-info text-center my-3">Pandas Command List</h1>
+<p class="text-secondary">Filter values are combined with <b>AND</b>, except for the box
+    outlined in red, where the Command, Example and Description fields are combined
+    with <b>OR</b>. If both sets are used together, the <b>OR</b> condition will be applied first.
+</p>
+<!-----------------------------------------------------------------------------
+    Section for the form that processes the filter conditions for the
+    table of Pandas commands.
+------------------------------------------------------------------------------>
+<section id="filterConditions">
+    <div class="justify-content-center mb-2">
+        <form method="POST" >
+        {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm filtervalue" id="command" name="command" placeholder="Any Command"
+                        value="{% if not opts.0 == '' %}{{opts.0}}{% endif %}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm filtervalue" id="example" name="example" placeholder="Any Example"
+                        value="{% if not opts.1 == '' %}{{opts.1}}{% endif %}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select name="appliesto" class="form-control form-control-sm filtervalue" id="appliesto">
+                            <option value="" selected disabled>Any Type</option>
+                            {% for item in app %}
+                            <option value="{{ item.appliesto }}"
+                            {% if item.appliesto|slugify == opts.2|slugify %}
+                            selected {% endif %}>{{ item.appliesto }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm filtervalue"  id="description" name="description" placeholder="Any Description"
+                        value="{% if not opts.4 == '' %}{{opts.4}}{% endif %}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm border-danger filtervalue"  id="all" name="all"
+                        placeholder="Any Command or Example or Description"
+                        value="{% if not opts.5 == '' %}{{opts.5}}{% endif %}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select name="category" class="form-control form-control-sm filtervalue" id="category">
+                            <option value="" selected disabled>Any Category</option>
+                            {% for item in cat %}
+                            <option value="{{ item.category }}"
+                            {% if item.category|slugify == opts.3|slugify %}
+                            selected {% endif %}>{{ item.category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <button type="submit" class="btn btn-success btn-sm mr-4 mb-2" id="filter">
+                        <i class="fas fa-filter"></i> Apply Filter(s)
+                    </button>
+                    <a href="#" onclick="clearFields()"
+                    class="btn btn-warning btn-sm mb-2">
+                    <i class="far fa-trash-alt"></i> Clear Filter Values</a>
+                </div>
+                <div class="col-md-4 mt-2">
+                    <p class="text-danger font-weight-bold">
+                        Records Displayed : {{ pds|length }}
+                    </p>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+<!-----------------------------------------------------------------------------
+    This section has the code for displaying the table of Pandas commands. It
+    may be a full list or a filtered list.
+------------------------------------------------------------------------------>
+<section id="pandasTable">
+    <div style="overflow-x:auto;">
+        <div class="row">
+            <div class=" col">
+                <table id="table" class="table table-striped table-sm">
+                    <thead class="bg-secondary text-warning">
+                    <tr>
+                        <th scope="col">Command</th>
+                        <th scope="col">Example</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Category</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in pds %}
+                        <tr>
+                            <td>{{ item.command }}</td>
+                            <td>{{ item.example }}</td>
+                            <td>{{ item.appliesto }}</td>
+                            <td>{{ item.category }}</td>
+                            <td class="text-info">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <a href="{% url 'fulldets' item.id 'none' 'none' %}"
+                                        type="submit"
+                                        class="text-secondary">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
+
+<!-----------------------------------------------------------------------------
+------------------------------------------------------------------------------>
+{% block scripts %}
+<script>
+    // Clear the content from the input filter fields and reload the page.
+
+    function clearFields() {
+        document.getElementById('command').value='';
+        document.getElementById('example').value='';
+        document.getElementById('appliesto').value='';
+        document.getElementById('category').value='';
+        document.getElementById('description').value='';
+        document.getElementById('all').value='';
+
+        document.getElementById('filter').click();
+    }
+
+</script>
+{% endblock scripts %}
+<!-----------------------------------------------------------------------------
+------------------------------------------------------------------------------>

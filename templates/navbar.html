@@ -1,0 +1,61 @@
+
+{% load static %}
+
+<nav class="navbar fixed-top navbar-expand-md navbar-dark bg-secondary">
+
+    <!-- Branding for the navbar - icon and company/website name, for example -->
+    <a class="navbar-brand" href="#"><img class="mylogo" src="{% static 'logo.png' %}"
+        alt="logo" /></a>
+    <span class="px-2 text-warning">Pandas Command Reference</span>
+
+    {% if user.is_authenticated %}
+        <i class="loggedin text-light pl-2">Hi {{ user.username }}!</i>
+    {% endif %}
+
+     <!-- This is the button that's displayed for a narrow screen e.g. a smartphone. -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- This defines the navigation elements, as an unordered list. -->
+    <div class="collapse navbar-collapse" id="navbarMenu">
+        <!-- ml-auto shifts the menu items to the right of the bar (ml = margin-left) -->
+        <ul class="navbar-nav ml-auto"  >
+            <li class="nav-item" >
+                <a class="nav-link" href="{% url 'index' %}">Home</a>
+            </li>
+            {% if user.is_staff %}
+                <li class="nav-item">
+                    <a href="{% url 'newrec' %}" class="nav-link" >Add</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a href="{% url 'pdfprint' %}" class="nav-link" >Print</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'stats' %}" class="nav-link" >Stats</a>
+            </li>
+            {% if not user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'register' %}" class="nav-link" >Signup</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'login' %}" class="nav-link" >Login</a>
+                </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link" >Logout</a>
+                </li>
+            {% endif %}
+            {% if user.is_staff %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">Admin</a>
+                </li>
+            {% endif %}
+         </ul>
+    </div>
+
+</nav>
+
+<br><br><br>

@@ -1,0 +1,58 @@
+<!--
+  Modified base template for use with pdf output, to remove headers and footers, etc.
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+      <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+      <meta charset="utf-8" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      />
+
+      {% load static %}
+
+      <link rel="stylesheet" href="{% static 'style.css' %}" />
+      <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+
+      <title>
+        {% block title %}
+          Bootstrap 4
+        {% endblock title %}
+      </title>
+
+    </head>
+
+  <!--  Start of the main body element of the page --------------------------->
+    <body>
+
+      <section id="mainBlock">
+        <div>
+          {% block content %}
+          {% endblock content %}
+        </div>
+      </section>
+
+    </body>
+
+
+
+
+ <!-----------------------------------------------------------------------------
+ ------------------------------------------------------------------------------>
+	<!-- <script src="{% static 'bootstrap.min.js' %}"></script> -->
+
+  <script>
+
+    // Get the current year for the copyright ---------------------------------
+    $('#year').text(new Date().getFullYear());
+
+
+  </script>
+
+{% block scripts %}
+{% endblock scripts %}
+
+</html>

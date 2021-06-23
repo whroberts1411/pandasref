@@ -1,0 +1,46 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    User Registration
+{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="col-md-8 offset-md-2 mt-4">
+    <div class="card border-warning">
+        <div class="card-header text-center bg-secondary text-warning">
+            <h4>User Registration</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username"><b>Username :</b></label>
+                    <input type="text" name="username" class="form-control" id="username"  required>
+                    <small class="form-text text-muted">Your username must be unique. We'll let you know if someone has taken it already.</small>
+                </div>
+                <div class="form-group">
+                    <label for="email"><b>Email Address :</b></label>
+                    <input type="email" name="email" class="form-control" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="password1"><b>Password :</b></label>
+                    <input type="password" name="password1" class="form-control" id="password1" required>
+                </div>
+                <div class="form-group">
+                    <label for="password2"><b>Confirm Password :</b></label>
+                    <input type="password" name="password2" class="form-control" id="password2" required>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="fas fa-user-plus"></i>  Sign Up</button>
+            </form>
+        </div>
+    </div>
+    <h4 class="text-danger text-center mt-4">{{ error }}</h4>
+</div>
+
+{% endblock content %}
